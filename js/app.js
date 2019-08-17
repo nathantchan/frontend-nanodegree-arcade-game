@@ -1,3 +1,19 @@
+function randomSpeed() {
+  const speeds = [50, 100, 500];
+  const i = Math.floor(Math.random() * 3);
+  return speeds[i];
+}
+
+function initialY() {
+  let row = Math.floor(Math.random() * 3);
+  if (row == 3) {
+    //in unlikely case that 1 is drawn by Math.random()
+    row = 2;
+  }
+
+  return row * 80 + 64;
+}
+
 // Enemies our player must avoid
 var Enemy = function() {
     // Variables applied to each of our instances go here,
@@ -11,24 +27,8 @@ var Enemy = function() {
 
     this.y = initialY();
 
-    this.speed = 500;
+    this.speed = randomSpeed();
 };
-
-speeds = {
-  fast: 500,
-  medium: 100,
-  slow: 50
-}
-
-function initialY() {
-  let row = Math.floor(Math.random() * 3);
-  if (row == 3) {
-    //in unlikely case that 1 is drawn by Math.random()
-    row = 2;
-  }
-
-  return row * 80 + 64;
-}
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
@@ -69,7 +69,11 @@ class Player {
 // Place the player object in a variable called player
 
 const enemy = new Enemy();
-const allEnemies = [enemy];
+const allEnemies = [];
+
+for (var i=0; i<3; i++) {
+  allEnemies.push(new Enemy());
+}
 
 const player = new Player();
 
