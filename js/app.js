@@ -54,13 +54,48 @@ Enemy.prototype.render = function() {
 // a handleInput() method.
 
 class Player {
-  constructor() {}
+  constructor() {
+    this.sprite = "images/char-boy.png";
+    this.x = 200;
+    this.y = 380;
+  }
 
-  update() {}
+  update() {
+  }
 
-  render() {}
+  render() {ctx.drawImage(Resources.get(this.sprite), this.x, this.y)}
 
-  handleInput(key) {}
+  handleInput(key) {
+    const y_step = 80;
+    const x_step = 100;
+    switch (key) {
+      case 'left':
+        this.x -= x_step;
+        break;
+      case 'right':
+        this.x += x_step;
+        break;
+      case 'up':
+        this.y -= y_step;
+        break;
+      case 'down':
+        this.y += y_step;
+    }
+
+    if (this.x < 0) {
+      this.x = 0;
+    } else if (this.x > 400) {
+      this.x = 400;
+    }
+ 
+    if (this.y < 60) {
+      // The player has reached the end.
+      this.y = 380;
+      this.x = 200;
+    } else if (this.y > 380) {
+      this.y = 380;
+    }
+  }
 }
 
 
