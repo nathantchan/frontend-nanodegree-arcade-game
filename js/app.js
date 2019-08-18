@@ -24,15 +24,15 @@ var Enemy = function() {
     this.sprite = 'images/enemy-bug.png';
 
     this.x = 0;
-
     this.y = initialY();
-
     this.speed = randomSpeed();
+    this.width = 85;
+    this.height= 50; 
 };
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
-Enemy.prototype.update = function(dt) {
+Enemy.prototype.update = function(dt, player) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
@@ -41,6 +41,16 @@ Enemy.prototype.update = function(dt) {
     } else {
       this.x = 0;
       this.y = initialY();
+    }
+
+    // collision detection algorithm adapted from
+    // http://blog.sklambert.com/html5-canvas-game-2d-collision-detection/#d-collision-detection
+    if (player.x < this.x + this.width &&
+        player.x + player.width  > this.x &&
+		    player.y < this.y + this.height &&
+        player.y + player.height > this.y) {
+      const collided = true;
+      player.update(true);
     }
 }
 
@@ -58,9 +68,14 @@ class Player {
     this.sprite = "images/char-boy.png";
     this.x = 200;
     this.y = 380;
+    this.width = 85;
+    this.height = 50;
   }
 
-  update() {
+  update(collided=false) {
+    if (collided) {
+      this.reset();
+    }
   }
 
   render() {ctx.drawImage(Resources.get(this.sprite), this.x, this.y)}
@@ -90,11 +105,15 @@ class Player {
  
     if (this.y < 60) {
       // The player has reached the end.
-      this.y = 380;
-      this.x = 200;
+      this.reset();
     } else if (this.y > 380) {
       this.y = 380;
     }
+  }
+
+  reset() {
+    this.y = 380;
+    this.x = 200;
   }
 }
 
