@@ -105,6 +105,7 @@ class Player {
  
     if (this.y < 60) {
       // The player has reached the end.
+      window.openModal();
       this.reset();
     } else if (this.y > 380) {
       this.y = 380;
@@ -144,3 +145,27 @@ document.addEventListener('keyup', function(e) {
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
+
+// Modal JS code adapted from:
+// https://lowrey.me/modals-in-pure-es6-javascript/
+class Modal {
+  constructor(overlay) {
+    this.overlay = overlay;
+    const closeButton = overlay.querySelector('.button-close')
+    closeButton.addEventListener('click', this.close.bind(this));
+    overlay.addEventListener('click', e => {
+      if (e.srcElement.id === this.overlay.id) {
+        this.close();
+      }
+    });
+  }
+  open() {
+    this.overlay.classList.remove('is-hidden');
+  }
+
+  close() {
+    this.overlay.classList.add('is-hidden');
+  }
+}
+const modal = new Modal(document.querySelector('.modal-overlay'));
+window.openModal = modal.open.bind(modal);
